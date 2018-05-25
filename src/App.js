@@ -1,21 +1,47 @@
 import React, {Component} from 'react';
 import './App.css';
-import Parent from './components/parentToChild/parent';
+import User from "./users/User";
+import  UniqueId from "react-html-id";
 
 class App extends Component {
-    state = {
-        title: "title for child"
+
+    constructor() {
+        super();
+
+        UniqueId.enableUniqueIds(this);
+        this.state = {
+            users: [
+                {id: this.nextUniqueId(), name: 'john', age: 20},
+                {id: this.nextUniqueId(), name: 'peter', age: 22},
+                {id: this.nextUniqueId(), name: 'jill', age: 21}
+            ]
+        };
+
+        console.log(this.state);
+    }
+
+
+
+    deleteUser = (index, event) => {
+        const users = Object.assign([], this.state.users);
+        users.splice(index, 1);
+
+        this.setState({users:users});
     };
 
-    changeTheWorld = (newTitle) => {
-        this.setState({title: newTitle})
-    };
 
     render() {
         return (
             <div className="App">
-                <Parent title={this.state.title} leaveTheWorldTheSame={this.changeTheWorld.bind(this, "the same world")}
-                        doWhatever={this.changeTheWorld.bind(this, "new world title")}/>
+                <ul>
+                    {
+                        this.state.users.map((user, index) => {
+
+                            return <User key={user.id} age={user.age} deleteEvent={this.deleteUser.bind(this, index)}>{user.name}</User>
+                        })
+                    }
+                </ul>
+
             </div>
         );
     }

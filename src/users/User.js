@@ -1,14 +1,12 @@
 import React from 'react';
 
 const User = (props) => {
-    let age = props.age ? props.age : 'NA';
-    if(props.children) {
-        return (
-            <div>Name: {props.children} | Age: {age}</div>
-        )
-    } else {
-        return <div>Invalid entry</div>
-    }
+    return(
+        <li>
+            <span>name: {props.children}, age= {props.age}</span>
+            <button onClick={props.deleteEvent}>Delete</button>
+        </li>
+    )
 };
 
 export default User;
