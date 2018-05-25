@@ -29,7 +29,7 @@ class App extends Component {
         this.setState({users:users});
     };
 
-``    changeUserName = (id, e) => {
+    changeUserName = (id, e) => {
         const index = this.state.users.findIndex((user) => {
             return user.id === id;
         });
