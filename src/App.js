@@ -29,6 +29,17 @@ class App extends Component {
         this.setState({users:users});
     };
 
+``    changeUserName = (id, e) => {
+        const index = this.state.users.findIndex((user) => {
+            return user.id === id;
+        });
+        const user = Object.assign({}, this.state.users[index]);
+        user.name = e.target.value;
+        const users = Object.assign([], this.state.users);
+        users[index] = user;
+
+        this.setState({users:users});
+    }
 
     render() {
         return (
@@ -37,7 +48,14 @@ class App extends Component {
                     {
                         this.state.users.map((user, index) => {
 
-                            return <User key={user.id} age={user.age} deleteEvent={this.deleteUser.bind(this, index)}>{user.name}</User>
+                            return <User
+                                key={user.id}
+                                age={user.age}
+                                deleteEvent={this.deleteUser.bind(this, index)}
+                                changeEvent={this.changeUserName.bind(this, user.id)}
+                                >
+                                    {user.name}
+                                </User>
                         })
                     }
                 </ul>
