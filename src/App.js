@@ -1,7 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import './App.css';
-import User from "./users/User";
-import  UniqueId from "react-html-id";
+import Child from './components/parentToChild/Child';
 
 const Temp  = (props) => {
     return (
@@ -22,16 +21,45 @@ class App extends Component {
     constructor() {
         super();
 
-        UniqueId.enableUniqueIds(this);
         this.state = {
-            users: [
-                {id: this.nextUniqueId(), name: 'john', age: 20},
-                {id: this.nextUniqueId(), name: 'peter', age: 22},
-                {id: this.nextUniqueId(), name: 'jill', age: 21}
-            ]
+            name: "john"
         };
 
-        console.log(this.state);
+        console.log("constructor");
+    }
+
+    componentWillMount() {
+        console.log("componentWillMount", window.innerWidth);
+
+    }
+
+
+    componentDidMount(){
+        console.log("componentDidMount");
+
+    }
+
+    componentWillReceiveProps() {
+        console.log("componentWillReceiveProps");
+
+    }
+
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log("shouldComponentUpdate");
+        return true;
+    }
+
+    componentWillUpdate() {
+        console.log("componentWillUpdate");
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        console.log("componentDidUpdate");
+    }
+
+    componentWillUnmount() {
+        console.log("componentWillUnmount");
     }
 
 
@@ -55,10 +83,28 @@ class App extends Component {
         this.setState({users:users});
     };
 
+    changeState = () => {
+        this.setState({name:"Hill"})
+    };
+
+    unmountChild() {
+        this.setState({name:"robert"});
+    }
+
     render() {
+
+        console.log("render");
+
+        if(this.state.name === 'robert') {
+            return (<div/>);
+        }
+
         return (
             <div className="App">
-                <Temp greetings="hi"/>
+                <div>parent name: {this.state.name}</div>
+                <Child name={this.state.name}/>
+                <button onClick={this.changeState.bind(this)}>Change state</button>
+                <button onClick={this.unmountChild.bind(this)}>Unmount child</button>
             </div>
         );
     }
