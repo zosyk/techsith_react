@@ -11,7 +11,12 @@ const User = (params) => {
 };
 
 
+
 class App extends Component {
+
+    onClick = () => {
+        console.log(this.firstName.value)
+    };
 
     state={
         loggedIn:false
@@ -32,53 +37,42 @@ class App extends Component {
             <Router>
                 <div className="App">
 
-                    <ul>
-                        <li>
-                            <NavLink exact activeStyle={
-                                {color:'green'}
-                            } to="/">Home</NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact  activeStyle={
-                                {color:'green'}
-                            } to="/about/">About</NavLink>
-                        </li>
-                        <li>
-                            <NavLink exact activeStyle={
-                                {color:'green'}
-                            } to="/user/Steave">User Steave</NavLink>
-                        </li>
-                    </ul>
-
-                    <Prompt when={!this.state.loggedIn} message={
-                        (location)=> {
-                            return location.pathname.startsWith('/user') ? "Are you sure?" : true
-                        }
-                    }/>
-                    <input type="button" onClick={this.loginHandle.bind(this)} value={this.state.loggedIn ? "Log out" : "Log in"}/>
-
-                    <Route path="/" exact strict={true} render={
-                        () => {
-                            return (
-                                <h1>Welcome Home</h1>
-                            )
-                        }
-                    }/>
-                    <Route path="/about/" exact={true} strict render={
-                        () => {
-                            return (
-                                <h1>Welcome About</h1>
-                            )
-                        }
-                    }/>
-
-                    <Route path="/user/:username" exact={true} strict render={({match}) => {
-                        return this.state.loggedIn ? (<User username={match.params.username}/>) : (<Redirect to="/"/>)}
-                    }/>
-
+                    <div>
+                        <span>First Name:</span>
+                        <input onKeyUp={this.onKeyUp.bind(this, 'firstName')} ref={(input) => {this.firstName = input}} type="text"/>
+                    </div>
+                    <div>
+                        <span>Last Name:</span>
+                        <input onKeyUp={this.onKeyUp.bind(this, 'lastName')} ref={(input) => {this.lastName = input}} type="text"/>
+                    </div>
+                    <div>
+                        <span>Age:</span>
+                        <input onKeyUp={this.onKeyUp.bind(this, 'age')} ref={(input) => {this.age = input}} type="text"/>
+                    </div>
+                    <div>
+                        <input onKeyUp={this.onKeyUp.bind(this, 'submit')} type="submit" ref={(input) => {this.submit = input}} value="submit" onClick={this.onClick} />
+                    </div>
                 </div>
             </Router>
         );
+    }
+
+    onKeyUp = (target, e) => {
+        if(e.keyCode === 13) {
+            switch (target) {
+                case 'firstName':
+                    this.lastName.focus();
+                    break;
+                case 'lastName':
+                    this.age.focus();
+                    break;
+                case 'age':
+                    this.submit.focus();
+                    break;
+                default:
+                    this.firstName.focus();
+            }
+        }
     }
 }
 
