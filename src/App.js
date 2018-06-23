@@ -1,78 +1,57 @@
 import React, {Component, Fragment} from 'react';
 import './App.css';
-import Child from './components/parentToChild/Child';
-import {BrowserRouter as Router, Link, NavLink, Redirect, Prompt} from "react-router-dom";
-import Route from "react-router-dom/Route";
-
-const User = (params) => {
-    return (
-        <h1>Welcome User {params.username}</h1>
-    )
-};
 
 
+//type guards
 
-class App extends Component {
+type TestType = {
+    str: string,
+    num?: number,
+    arr: Array<number>,
 
-    onClick = () => {
-        console.log(this.firstName.value)
+}
+
+type TestState = {
+    message: string
+}
+
+class Test extends Component<TestType, TestState> {
+
+    state = {
+        message: "hi there"
     };
 
-    state={
-        loggedIn:false
+    static defaultProps = {
+        str: "Default value"
     };
 
-    loginHandle =() =>  {
-      this.setState(prevState => (
-          {
-              loggedIn: !prevState.loggedIn
-          }
-      ))
-    };
+    h1:?HTMLHeadingElement;
+    render() {
+
+        return (
+            <div>
+                <h1>{this.props.str}</h1>
+                <h1>{this.props.num}</h1>
+                <h1>{this.props.arr.map(item => item + " ")}</h1>
+                <h1 ref={h => this.h1 = h}>message state: {this.state.message}</h1>
+
+            </div>
+
+        );
+    }
+}
+
+class App extends Component<{}> {
 
     render() {
 
         return (
+            <div className="App">
 
-            <Router>
-                <div className="App">
+                <Test  arr={[1,23,3]}/>
+            </div>
 
-                    <div>
-                        <span>First Name:</span>
-                        <input onKeyUp={this.onKeyUp.bind(this, 'firstName')} ref={(input) => {this.firstName = input}} type="text"/>
-                    </div>
-                    <div>
-                        <span>Last Name:</span>
-                        <input onKeyUp={this.onKeyUp.bind(this, 'lastName')} ref={(input) => {this.lastName = input}} type="text"/>
-                    </div>
-                    <div>
-                        <span>Age:</span>
-                        <input onKeyUp={this.onKeyUp.bind(this, 'age')} ref={(input) => {this.age = input}} type="text"/>
-                    </div>
-                    <div>
-                        <input onKeyUp={this.onKeyUp.bind(this, 'submit')} type="submit" ref={(input) => {this.submit = input}} value="submit" onClick={this.onClick} />
-                    </div>
-                </div>
-            </Router>
         );
-    }
-
-    onKeyUp = (target, e) => {
-        if(e.keyCode === 13) {
-            switch (target) {
-                case 'firstName':
-                    this.lastName.focus();
-                    break;
-                case 'lastName':
-                    this.age.focus();
-                    break;
-                case 'age':
-                    this.submit.focus();
-                    break;
-                default:
-                    this.firstName.focus();
-            }
-        }
     }
 }
 
